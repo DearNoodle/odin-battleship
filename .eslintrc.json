@@ -21,6 +21,8 @@
     "prefer-const": "off",
     "no-plusplus": "off",
     "no-param-reassign": "off",
-    "no-alert": "off"
+    "no-alert": "off",
+    "no-use-before-define": "off",
+    "prefer-destructuring": "off"
   }
 }
