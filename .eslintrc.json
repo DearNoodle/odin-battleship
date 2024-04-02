@@ -23,6 +23,7 @@
     "no-param-reassign": "off",
     "no-alert": "off",
     "no-use-before-define": "off",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+    "import/no-cycle": "off"
   }
 }
