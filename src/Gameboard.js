@@ -4,18 +4,12 @@ export default function createGameboard() {
   // gameboard setup
 
   let boardSize = 10;
-  let gameBoard = [];
-  for (let i = 0; i < boardSize; i++) {
-    gameBoard[i] = [];
-    for (let j = 0; j < boardSize; j++) {
-      gameBoard[i][j] = null;
-    }
-  }
 
   const Player = [
-    { id: "p1", playerType: "user", ships: [], shipNum: 5 },
-    { id: "p2", playerType: "com", ships: [], shipNum: 5 },
+    { id: "p1", playerType: "user", ships: [], shipNum: 5, playerBoard: [] },
+    { id: "p2", playerType: "com", ships: [], shipNum: 5, playerBoard: [] },
   ];
+
   Player.forEach((player) => {
     player.ships.push(createShip(["Carrier", 5]));
     player.ships.push(createShip(["	Battleship", 4]));
@@ -23,6 +17,23 @@ export default function createGameboard() {
     player.ships.push(createShip(["Submarine", 3]));
     player.ships.push(createShip(["Destroyer", 2]));
   });
+
+  Player.forEach((player) => {
+    for (let i = 0; i < boardSize; i++) {
+      player.playerBoard[i] = [];
+      for (let j = 0; j < boardSize; j++) {
+        player.playerBoard[i][j] = null;
+      }
+    }
+  });
+
+  function randomPlaceAllShip() {
+    Player.forEach((player) => {
+      player.ships.forEach((ship) => {
+        ship.placeShip("random", player.playerBoard);
+      });
+    });
+  }
 
   let [curPlayer, nextPlayer] = Player;
 
@@ -64,9 +75,9 @@ export default function createGameboard() {
   }
 
   return {
-    gameBoard,
     Player,
     isGameEnd,
+    randomPlaceAllShip,
     nextRound,
     receiveAttack,
     isAllSunk,
