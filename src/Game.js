@@ -2,6 +2,7 @@ import createGameboard from "./Gameboard";
 
 export function initGame() {
   const gameBoard = createGameboard();
+  gameBoard.randomPlaceAllShip();
   // unit test gameBoard.player.gameBoard
 }
 

@@ -1,5 +1,3 @@
-import createGameboard from "./playerBoard";
-
 export default function createShip(info = [null, null]) {
   let [name, length] = info;
   let hitNum = 0;
@@ -20,8 +18,8 @@ export default function createShip(info = [null, null]) {
   }
 
   function setCoordinate(coord, playerBoard) {
-    let [x, y] = coord;
     if (coord != null) {
+      let [x, y] = coord;
       if (!Number.isInteger(x) || !Number.isInteger(y))
         throw new TypeError("Coord must be null or array of integers");
       if (x < 0 || x > playerBoard.length || y < 0 || y > playerBoard.length)
@@ -46,19 +44,22 @@ export default function createShip(info = [null, null]) {
 
   function setIsPlaced(bool) {
     if (!(bool === !!bool)) throw new TypeError("Input type is not boolean");
+    isPlaced = bool;
   }
 
-  function placeShip(placement, playerBoard) {
+  function placeShip(placement, boardSize, playerBoard) {
     if (placement === "random") {
-      while (!getIsPlaced()) {
+      let i = 0;
+      while (!getIsPlaced() && i < 1000) {
+        i++;
         setCoordinate(
           [
-            Math.floor(Math.random() * getLength()),
-            Math.floor(Math.random() * getLength()),
+            Math.floor(Math.random() * boardSize),
+            Math.floor(Math.random() * boardSize),
           ],
           playerBoard,
         );
-        setDirection(["vertical, horizontal"][Math.floor(Math.random())]);
+        setDirection(["vertical", "horizontal"][Math.floor(Math.random() * 2)]);
         checkPlace(playerBoard);
       }
       return;
@@ -72,23 +73,53 @@ export default function createShip(info = [null, null]) {
   function checkPlace(playerBoard) {
     let [coordx, coordy] = getcoord();
     for (let i = 0; i < getLength(); i++) {
-      if (getDirection() === "vertical") {
-        if (playerBoard[(coordx, coordy + i)] !== null) {
-          failPlace();
-          return;
+      // if (getDirection() === "vertical") {
+      //   if (playerBoard[coordx] === undefined) {
+      //     failPlace();
+      //     return;
+      //   }
+      //   if (playerBoard[coordx][coordy + i] !== null) {
+      //     failPlace();
+      //     return;
+      //   }
+      // } else if (getDirection() === "horizontal") {
+      //   if (playerBoard[coordx + i] === undefined) {
+      //     failPlace();
+      //     return;
+      //   }
+      //   if (playerBoard[coordx + i][coordy] !== null) {
+      //     failPlace();
+      //     return;
+      //   }
+      // }
+      function isValidPlacement() {
+        const isPlacable = (x, y) =>
+          x >= 0 &&
+          y >= 0 &&
+          playerBoard[x] !== undefined &&
+          playerBoard[x][y] === null;
+
+        if (getDirection() === "vertical") {
+          return isPlacable(coordx, coordy + i);
         }
-      } else if (getDirection() === "horizontal") {
-        if (playerBoard[(coordx + i, coordy)] !== null) {
-          failPlace();
-          return;
+        if (getDirection() === "horizontal") {
+          return isPlacable(coordx + i, coordy);
         }
+        throw new Error("Invalid direction");
+      }
+      if (isValidPlacement()) {
+        // valid placement logic
+      } else {
+        failPlace();
+        return;
       }
     }
+
     for (let i = 0; i < getLength(); i++) {
       if (getDirection() === "vertical") {
         playerBoard[coordx][coordy + i] = getName();
         setCoordinate([coordx, coordy + i], playerBoard);
-      } else if (getDirection === "horizontal") {
+      } else if (getDirection() === "horizontal") {
         playerBoard[coordx + i][coordy] = getName();
         setCoordinate([coordx + i, coordy], playerBoard);
       }

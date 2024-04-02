@@ -12,7 +12,7 @@ export default function createGameboard() {
 
   Player.forEach((player) => {
     player.ships.push(createShip(["Carrier", 5]));
-    player.ships.push(createShip(["	Battleship", 4]));
+    player.ships.push(createShip(["Battleship", 4]));
     player.ships.push(createShip(["Cruiser", 3]));
     player.ships.push(createShip(["Submarine", 3]));
     player.ships.push(createShip(["Destroyer", 2]));
@@ -30,7 +30,11 @@ export default function createGameboard() {
   function randomPlaceAllShip() {
     Player.forEach((player) => {
       player.ships.forEach((ship) => {
-        ship.placeShip("random", player.playerBoard);
+        let i = 0;
+        while (!ship.getIsPlaced() && i < 1000) {
+          i++;
+          ship.placeShip("random", boardSize, player.playerBoard);
+        }
       });
     });
   }
