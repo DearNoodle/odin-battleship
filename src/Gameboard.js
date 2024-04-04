@@ -6,8 +6,8 @@ export default function createGameboard() {
   let boardSize = 10;
 
   const Player = [
-    { id: "p1", playerType: "user", ships: [], shipNum: 5, playerBoard: [] },
-    { id: "p2", playerType: "com", ships: [], shipNum: 5, playerBoard: [] },
+    { id: "p1", playerType: "user", ships: [], playerBoard: [] },
+    { id: "p2", playerType: "com", ships: [], playerBoard: [] },
   ];
 
   Player.forEach((player) => {
@@ -41,8 +41,6 @@ export default function createGameboard() {
 
   let [curPlayer, nextPlayer] = Player;
 
-  let isGameEnd = false;
-
   // game events
 
   function nextRound() {
@@ -55,13 +53,13 @@ export default function createGameboard() {
   }
 
   function receiveAttack(coord) {
-    // hit or not boolean
-    if ("wip") {
-      // receiver.ships[?].hit() logic
-      // DOM operation
-      isAllSunk();
-    } else {
+    let [x, y] = coord;
+    if (nextPlayer.playerBoard[x][y] === null) {
       missedAttack();
+    } else {
+      let shipName = nextPlayer.playerBoard[x][y];
+      nextPlayer.ships.find((ship) => ship.getName() === shipName).hit();
+      // DOM operation (grid show hitted and grid not hittable anymore)
     }
   }
 
@@ -70,17 +68,12 @@ export default function createGameboard() {
   }
 
   function isAllSunk() {
-    Player.forEach((player) => {
-      if (player.ships.every((ship) => ship.isSunk)) {
-        isGameEnd = true;
-      }
-    });
-    return isGameEnd;
+    return curPlayer.ships.every((ship) => ship.isSunk());
   }
 
   return {
     Player,
-    isGameEnd,
+    curPlayer,
     randomPlaceAllShip,
     nextRound,
     receiveAttack,
