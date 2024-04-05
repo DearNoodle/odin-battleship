@@ -1,2 +1,6 @@
 **/*.test.js
+**/*.config.js
 /dist/main.js
+webpack.common.js
+webpack.dev.js
+webpack.prod.js
