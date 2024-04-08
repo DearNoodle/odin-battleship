@@ -25,6 +25,8 @@
     "no-use-before-define": "off",
     "prefer-destructuring": "off",
     "import/no-cycle": "off",
-    "no-inner-declarations": "off"
+    "no-inner-declarations": "off",
+    "no-await-in-loop": "off",
+    "no-promise-executor-return": "off"
   }
 }
