@@ -1,4 +1,5 @@
 import createShip from "./Ship";
+import { changeCellColor, announceShipHit, announceShipMiss } from "./DOM";
 
 export default function createGameboard() {
   // gameboard setup
@@ -52,19 +53,29 @@ export default function createGameboard() {
     }
   }
 
-  function receiveAttack(coord) {
+  function receiveAttack(target, coord) {
+    if (coord === null) {
+      throw new Error("Attack Click Error");
+    }
     let [x, y] = coord;
     if (nextPlayer.playerBoard[x][y] === null) {
-      missedAttack();
+      missedAttack(target);
     } else {
-      let shipName = nextPlayer.playerBoard[x][y];
-      nextPlayer.ships.find((ship) => ship.getName() === shipName).hit();
-      // DOM operation (grid show hitted and grid not hittable anymore)
+      hitAttack(target, coord);
     }
   }
 
-  function missedAttack() {
-    // DOM operation
+  function missedAttack(target) {
+    changeCellColor(target, "white");
+    announceShipMiss();
+  }
+
+  function hitAttack(target, coord) {
+    let [x, y] = coord;
+    let shipName = nextPlayer.playerBoard[x][y];
+    nextPlayer.ships.find((ship) => ship.getName() === shipName).hit();
+    changeCellColor(target, "red");
+    announceShipHit(shipName);
   }
 
   function isAllSunk() {

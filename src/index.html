@@ -6,28 +6,683 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Webpack App</title>
   </head>
-  <body>
-    <figure class="bg-slate-100 rounded-xl p-8 dark:bg-slate-800">
-      <img
-        class="w-24 h-24 rounded-full mx-auto"
-        src="/sarah-dayan.jpg"
-        alt=""
-        width="384"
-        height="512"
-      />
-      <div class="pt-6 space-y-4">
-        <blockquote>
-          <p class="text-lg font-medium">
-            “Tailwind CSS is the only framework that I've seen scale on large
-            teams. It’s easy to customize, adapts to any design, and the build
-            size is tiny.”
-          </p>
-        </blockquote>
-        <figcaption class="font-medium">
-          <div class="text-sky-500 dark:text-sky-400">Sarah Dayan</div>
-          <div>Staff Engineer, Algolia</div>
-        </figcaption>
-      </div>
-    </figure>
+  <body class="font-mono">
+    <div class="flex flex-col items-center">
+      <header class="mt-10">
+        <div class="rounded-md bg-gray-900 p-2">
+          <h1
+            class="text-6xl text-transparent bg-clip-text bg-gradient-to-r to-gray-200 from-gray-700"
+          >
+            BattleShip
+          </h1>
+        </div>
+      </header>
+      <main class="mt-10 flex flex-col items-center gap-5">
+        <p
+          class="game-setup w-fit p-4 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300"
+        >
+          <span class="font-bold">Game Setup</span> Place Ships at Defense Board
+        </p>
+        <div class="ships-container flex justify-center relative">
+          <div
+            class="carrier-h w-[14.3rem] h-10 z-10 absolute rounded border-2 bg-gray-400 border-gray-500 flex justify-center items-center text-sm"
+            draggable="true"
+          >
+            Carrier
+          </div>
+          <div
+            class="battleship-h w-[11.4rem] h-10 top-12 z-10 absolute rounded border-2 bg-gray-400 border-gray-500 flex justify-center items-center text-sm"
+            draggable="true"
+          >
+            Battleship
+          </div>
+          <div
+            class="cruiser-h w-[8.5rem] h-10 top-24 z-10 absolute rounded border-2 bg-gray-400 border-gray-500 flex justify-center items-center text-sm"
+            draggable="true"
+          >
+            Cruiser
+          </div>
+          <div
+            class="submarine-h w-[8.5rem] h-10 top-36 z-10 absolute rounded border-2 bg-gray-400 border-gray-500 flex justify-center items-center text-sm"
+            draggable="true"
+          >
+            Submarine
+          </div>
+          <div
+            class="destroyer-h w-[5.5rem] h-10 top-48 z-10 absolute rounded border-2 bg-gray-400 border-gray-500 flex justify-center items-center text-sm"
+            draggable="true"
+          >
+            Destroyer
+          </div>
+        </div>
+        <div class="mt-60 flex flex-wrap justify-center gap-10 max-w-[70rem]">
+          <div class="container w-[30rem]">
+            <div class="subtitle text-center">Defense Board</div>
+            <div
+              class="defense-board grid grid-cols-10 grid-rows-10 w-[484px] h-[484px] items-center justify-items-center p-1 border-gray-500 border-2 rounded-sm"
+            >
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 border-2 border-gray-500"
+              ></div>
+            </div>
+          </div>
+          <div class="container w-[30rem]">
+            <div class="subtitle text-center">Attack Board</div>
+            <div
+              class="attack-board grid grid-cols-10 grid-rows-10 w-[30rem] h-[30rem] items-center justify-items-center p-1 border-gray-500 border-2 rounded-sm"
+            >
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+              <div
+                class="cell rounded w-10 h-10 bg-gray-300 hover:bg-gray-400"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <p
+          class="attack-success w-fit p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+        >
+          <span class="font-bold">Attack Successful</span> Hit on *** at [***]
+        </p>
+        <p
+          class="attack-fail w-fit p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        >
+          <span class="font-bold">Attack Failed</span> Hit at [***]
+        </p>
+      </main>
+      <footer></footer>
+    </div>
   </body>
 </html>
