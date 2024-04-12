@@ -6,11 +6,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Webpack App</title>
   </head>
-  <div class="color-divs">
+  <div id="tailwind-css">
+    <div class="pointer-events-none"></div>
     <div class="bg-red-500"></div>
     <div class="bg-gray-200"></div>
   </div>
   <body class="font-mono">
+    <div
+      class="game-end-modal hidden overflow-y-auto overflow-x-hidden fixed z-50 items-center justify-center w-full md:inset-0 h-screen max-h-full bg-black bg-opacity-50"
+    >
+      <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <button
+            type="button"
+            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          >
+            <svg
+              class="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+          </button>
+          <div class="p-4 md:p-5 text-center">
+            <svg
+              class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <h3 class="text-lg font-normal text-gray-500 dark:text-gray-400">
+              Game Over
+            </h3>
+            <h3
+              class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"
+            >
+              <span class="win-text"></span> win!
+            </h3>
+            <button
+              type="button"
+              class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            >
+              View Gameboard
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="flex flex-col items-center">
       <header class="mt-10">
         <div class="rounded-md bg-gray-900 p-2">
@@ -27,7 +87,7 @@
         >
           <span class="font-bold">Game Setup</span> Place Ships at Defense Board
         </p>
-        <div class="ships-container flex justify-center relative">
+        <div class="ships-container mb-60 flex justify-center relative">
           <div
             class="carrier-h w-[14.3rem] h-10 z-10 absolute rounded border-2 bg-gray-400 border-gray-500 flex justify-center items-center text-sm"
             draggable="true"
@@ -59,7 +119,24 @@
             Destroyer
           </div>
         </div>
-        <div class="mt-60 flex flex-wrap justify-center gap-10 max-w-[70rem]">
+        <p
+          class="attack-success hidden w-fit p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+        >
+          <span class="font-bold">Attack Successful</span> Hit on
+          <span class="attack-success-ship-name"></span> at [<span
+            class="attack-success-coord"
+          ></span
+          >]
+        </p>
+        <p
+          class="attack-fail hidden w-fit p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        >
+          <span class="font-bold">Attack Failed</span> Hit at [<span
+            class="attack-fail-coord"
+          ></span
+          >]
+        </p>
+        <div class="flex flex-wrap justify-center gap-10 max-w-[70rem]">
           <div class="container w-[30rem]">
             <div class="subtitle text-center">Defense Board</div>
             <div
@@ -675,16 +752,6 @@
             </div>
           </div>
         </div>
-        <p
-          class="attack-success w-fit p-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-        >
-          <span class="font-bold">Attack Successful</span> Hit on *** at [***]
-        </p>
-        <p
-          class="attack-fail w-fit p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-        >
-          <span class="font-bold">Attack Failed</span> Hit at [***]
-        </p>
       </main>
       <footer></footer>
     </div>

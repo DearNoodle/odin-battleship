@@ -91,9 +91,8 @@ export default function createGameboard() {
   }
 
   function missedAttack(target, coord) {
-    // makeCellUnclickable(target);
     renderCell(target, "white", coord);
-    announceShipMiss();
+    announceShipMiss(coord);
   }
 
   function hitAttack(target, coord) {
@@ -102,9 +101,8 @@ export default function createGameboard() {
     roundPlayers.nextPlayer.ships
       .find((ship) => ship.getName() === shipName)
       .hit();
-    // makeCellUnclickable(target);
     renderCell(target, "red", coord);
-    announceShipHit(shipName);
+    announceShipHit(shipName, coord);
   }
 
   function isAllSunk() {

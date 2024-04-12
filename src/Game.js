@@ -1,11 +1,12 @@
 import createGameboard from "./Gameboard";
-import { DomClicks } from "./DOM";
+import { DomClicks, showWinModal } from "./DOM";
+
+const comMoveTime = 1.5; // in second
 
 export default async function Game() {
   // init
   const gameBoard = createGameboard();
   gameBoard.randomPlaceAllShip();
-  // unit test gameBoard.player.gameBoard
 
   // run game
   while (!gameBoard.isAllSunk()) {
@@ -13,25 +14,21 @@ export default async function Game() {
       await waitForDomClick();
       gameBoard.DomClickAttack();
     } else if (gameBoard.roundPlayers.curPlayer.id === "com") {
+      await new Promise((resolve) => setTimeout(resolve, comMoveTime * 1000));
       gameBoard.comRandomAttack();
     } else {
       throw new Error("Invalid Player");
     }
     gameBoard.nextRound();
   }
+
+  // end game
   const winner = gameBoard.roundPlayers.nextPlayer.id;
-  // dom show winner
+  showWinModal(winner);
 }
 
 async function waitForDomClick() {
   while (!DomClicks.attack.clicked) {
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Check for click every 100ms
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }
-
-// function waitForDomClick() {
-//   return new Promise((resolve) => {
-//     // Add a one-time event listener
-//     document.addEventListener("click", resolve, { once: true });
-//   });
-// }
