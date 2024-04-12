@@ -1,10 +1,7 @@
-// export function render() {
-//   // wip
-// }
-
 export const DomClicks = { attack: { clicked: false } };
 
 const attackBoardCells = document.querySelectorAll(".attack-board .cell");
+const defenseBoardCells = document.querySelectorAll(".defense-board .cell");
 const gameSetupMsg = document.querySelector(".game-setup");
 const attackSuccessMsg = document.querySelector(".attack-success");
 const attackFailMsg = document.querySelector(".attack-fail");
@@ -18,12 +15,21 @@ for (let i = 0; i < attackBoardCells.length; i++) {
   });
 }
 
-export function changeCellColor(target, color) {
-  target.classList.remove("bg-gray-300");
+export function renderCell(target, color, coord) {
+  let targetCell;
+  if (target !== "defenseBoard") {
+    targetCell = target;
+    targetCell.classList.remove("bg-gray-400");
+  } else {
+    let [x, y] = coord;
+    targetCell = defenseBoardCells[x * 10 + y];
+    targetCell.classList.add("z-20");
+  }
+
   if (color === "red") {
-    target.classList.add("bg-red-500");
+    targetCell.classList.add("bg-red-500");
   } else if (color === "white") {
-    target.classList.add("bg-gray-50");
+    targetCell.classList.add("bg-gray-200");
   } else {
     throw new Error("Cell color error");
   }

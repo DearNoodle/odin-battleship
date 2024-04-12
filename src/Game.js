@@ -9,19 +9,29 @@ export default async function Game() {
 
   // run game
   while (!gameBoard.isAllSunk()) {
-    await waitForAttack();
-    DomClicks.attack.clicked = false;
-    let target = DomClicks.attack.target;
-    let coord = DomClicks.attack.coord;
-    gameBoard.receiveAttack(target, coord);
+    if (gameBoard.roundPlayers.curPlayer.id === "user") {
+      await waitForDomClick();
+      gameBoard.DomClickAttack();
+    } else if (gameBoard.roundPlayers.curPlayer.id === "com") {
+      gameBoard.comRandomAttack();
+    } else {
+      throw new Error("Invalid Player");
+    }
     gameBoard.nextRound();
   }
-  const winner = gameBoard.curPlayer;
+  const winner = gameBoard.roundPlayers.nextPlayer.id;
   // dom show winner
 }
 
-async function waitForAttack() {
+async function waitForDomClick() {
   while (!DomClicks.attack.clicked) {
     await new Promise((resolve) => setTimeout(resolve, 100)); // Check for click every 100ms
   }
 }
+
+// function waitForDomClick() {
+//   return new Promise((resolve) => {
+//     // Add a one-time event listener
+//     document.addEventListener("click", resolve, { once: true });
+//   });
+// }

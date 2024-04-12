@@ -60,44 +60,27 @@ export default function createShip(info = [null, null]) {
           playerBoard,
         );
         setDirection(["vertical", "horizontal"][Math.floor(Math.random() * 2)]);
-        checkPlace(playerBoard);
+        checkPlace(playerBoard, boardSize);
       }
       return;
     }
     let [coord, dir] = placement;
     setCoordinate(coord, playerBoard);
     setDirection(dir);
-    checkPlace(playerBoard);
+    checkPlace(playerBoard, boardSize);
   }
 
-  function checkPlace(playerBoard) {
+  function checkPlace(playerBoard, boardSize) {
     let [coordx, coordy] = getcoord();
     for (let i = 0; i < getLength(); i++) {
-      // if (getDirection() === "vertical") {
-      //   if (playerBoard[coordx] === undefined) {
-      //     failPlace();
-      //     return;
-      //   }
-      //   if (playerBoard[coordx][coordy + i] !== null) {
-      //     failPlace();
-      //     return;
-      //   }
-      // } else if (getDirection() === "horizontal") {
-      //   if (playerBoard[coordx + i] === undefined) {
-      //     failPlace();
-      //     return;
-      //   }
-      //   if (playerBoard[coordx + i][coordy] !== null) {
-      //     failPlace();
-      //     return;
-      //   }
-      // }
       function isValidPlacement() {
         const isPlacable = (x, y) =>
           x >= 0 &&
+          x < boardSize &&
           y >= 0 &&
+          y < boardSize &&
           playerBoard[x] !== undefined &&
-          playerBoard[x][y] === null;
+          playerBoard[x][y].shipHere === null;
 
         if (getDirection() === "vertical") {
           return isPlacable(coordx, coordy + i);
@@ -107,9 +90,7 @@ export default function createShip(info = [null, null]) {
         }
         throw new Error("Invalid direction");
       }
-      if (isValidPlacement()) {
-        // valid placement logic
-      } else {
+      if (!isValidPlacement()) {
         failPlace();
         return;
       }
@@ -117,10 +98,10 @@ export default function createShip(info = [null, null]) {
 
     for (let i = 0; i < getLength(); i++) {
       if (getDirection() === "vertical") {
-        playerBoard[coordx][coordy + i] = getName();
+        playerBoard[coordx][coordy + i].shipHere = getName();
         setCoordinate([coordx, coordy + i], playerBoard);
       } else if (getDirection() === "horizontal") {
-        playerBoard[coordx + i][coordy] = getName();
+        playerBoard[coordx + i][coordy].shipHere = getName();
         setCoordinate([coordx + i, coordy], playerBoard);
       }
     }

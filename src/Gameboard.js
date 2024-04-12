@@ -1,5 +1,10 @@
 import createShip from "./Ship";
-import { changeCellColor, announceShipHit, announceShipMiss } from "./DOM";
+import {
+  renderCell,
+  announceShipHit,
+  announceShipMiss,
+  DomClicks,
+} from "./DOM";
 
 export default function createGameboard() {
   // gameboard setup
@@ -7,8 +12,8 @@ export default function createGameboard() {
   let boardSize = 10;
 
   const Player = [
-    { id: "p1", playerType: "user", ships: [], playerBoard: [] },
-    { id: "p2", playerType: "com", ships: [], playerBoard: [] },
+    { id: "user", ships: [], playerBoard: [] },
+    { id: "com", ships: [], playerBoard: [] },
   ];
 
   Player.forEach((player) => {
@@ -23,7 +28,7 @@ export default function createGameboard() {
     for (let i = 0; i < boardSize; i++) {
       player.playerBoard[i] = [];
       for (let j = 0; j < boardSize; j++) {
-        player.playerBoard[i][j] = null;
+        player.playerBoard[i][j] = { shipHere: null, isAttacked: false };
       }
     }
   });
@@ -41,16 +46,35 @@ export default function createGameboard() {
   }
 
   let [curPlayer, nextPlayer] = Player;
-
+  let roundPlayers = { curPlayer, nextPlayer };
   // game events
 
   function nextRound() {
-    curPlayer = nextPlayer;
-    if (curPlayer === Player[0]) {
-      nextPlayer = Player[1];
-    } else {
-      nextPlayer = Player[0];
+    let roundSwitcher = roundPlayers.curPlayer;
+    roundPlayers.curPlayer = roundPlayers.nextPlayer;
+    roundPlayers.nextPlayer = roundSwitcher;
+  }
+
+  function comRandomAttack() {
+    let isAttackValid = false;
+    while (!isAttackValid) {
+      let coord = [
+        Math.floor(Math.random() * boardSize),
+        Math.floor(Math.random() * boardSize),
+      ];
+      let [x, y] = coord;
+      if (roundPlayers.nextPlayer.playerBoard[x][y].isAttacked === false) {
+        isAttackValid = true;
+        receiveAttack("defenseBoard", coord);
+      }
     }
+  }
+
+  function DomClickAttack() {
+    DomClicks.attack.clicked = false;
+    let target = DomClicks.attack.target;
+    let coord = DomClicks.attack.coord;
+    receiveAttack(target, coord);
   }
 
   function receiveAttack(target, coord) {
@@ -58,35 +82,42 @@ export default function createGameboard() {
       throw new Error("Attack Click Error");
     }
     let [x, y] = coord;
-    if (nextPlayer.playerBoard[x][y] === null) {
-      missedAttack(target);
+    if (roundPlayers.nextPlayer.playerBoard[x][y].shipHere === null) {
+      missedAttack(target, coord);
     } else {
       hitAttack(target, coord);
     }
+    roundPlayers.nextPlayer.playerBoard[x][y].isAttacked = true;
   }
 
-  function missedAttack(target) {
-    changeCellColor(target, "white");
+  function missedAttack(target, coord) {
+    // makeCellUnclickable(target);
+    renderCell(target, "white", coord);
     announceShipMiss();
   }
 
   function hitAttack(target, coord) {
     let [x, y] = coord;
-    let shipName = nextPlayer.playerBoard[x][y];
-    nextPlayer.ships.find((ship) => ship.getName() === shipName).hit();
-    changeCellColor(target, "red");
+    let shipName = roundPlayers.nextPlayer.playerBoard[x][y].shipHere;
+    roundPlayers.nextPlayer.ships
+      .find((ship) => ship.getName() === shipName)
+      .hit();
+    // makeCellUnclickable(target);
+    renderCell(target, "red", coord);
     announceShipHit(shipName);
   }
 
   function isAllSunk() {
-    return curPlayer.ships.every((ship) => ship.isSunk());
+    return roundPlayers.curPlayer.ships.every((ship) => ship.isSunk());
   }
 
   return {
     Player,
-    curPlayer,
+    roundPlayers,
     randomPlaceAllShip,
     nextRound,
+    comRandomAttack,
+    DomClickAttack,
     receiveAttack,
     isAllSunk,
   };
