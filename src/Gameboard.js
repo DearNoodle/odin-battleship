@@ -8,8 +8,18 @@ import {
 
 export default function createGameboard() {
   // gameboard setup
-
   let boardSize = 10;
+  let isAllPlaced = false;
+
+  function getIsAllPlaced() {
+    return isAllPlaced;
+  }
+  function setIsAllPlaced(bool) {
+    if (typeof bool !== "boolean") {
+      throw new TypeError("Input type is not boolean");
+    }
+    isAllPlaced = bool;
+  }
 
   const Player = [
     { id: "user", ships: [], playerBoard: [] },
@@ -33,7 +43,7 @@ export default function createGameboard() {
     }
   });
 
-  function randomPlaceAllShip() {
+  function randomPlaceAll() {
     Player.forEach((player) => {
       player.ships.forEach((ship) => {
         let i = 0;
@@ -43,6 +53,7 @@ export default function createGameboard() {
         }
       });
     });
+    setIsAllPlaced(true);
   }
 
   let [curPlayer, nextPlayer] = Player;
@@ -110,9 +121,9 @@ export default function createGameboard() {
   }
 
   return {
-    Player,
     roundPlayers,
-    randomPlaceAllShip,
+    getIsAllPlaced,
+    randomPlaceAll,
     nextRound,
     comRandomAttack,
     DomClickAttack,

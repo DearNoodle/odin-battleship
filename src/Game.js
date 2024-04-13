@@ -1,12 +1,14 @@
 import createGameboard from "./Gameboard";
-import { DomClicks, showWinModal } from "./DOM";
+import { DomClicks, showWinModal, removeSetupMsg } from "./DOM";
 
 const comMoveTime = 1.5; // in second
-
+const shipPlacement = "random";
 export default async function Game() {
   // init
   const gameBoard = createGameboard();
-  gameBoard.randomPlaceAllShip();
+
+  await waitForShipPlace(gameBoard, shipPlacement);
+  removeSetupMsg();
 
   // run game
   while (!gameBoard.isAllSunk()) {
@@ -25,6 +27,17 @@ export default async function Game() {
   // end game
   const winner = gameBoard.roundPlayers.nextPlayer.id;
   showWinModal(winner);
+}
+
+async function waitForShipPlace(gameBoard, place) {
+  if (place === "random") {
+    gameBoard.randomPlaceAll();
+    // wip dom auto placement
+  }
+  // wip manual placement
+  while (!gameBoard.getIsAllPlaced()) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
 }
 
 async function waitForDomClick() {

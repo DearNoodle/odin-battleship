@@ -3,6 +3,8 @@ export const DomClicks = { attack: { clicked: false } };
 const attackBoardCells = document.querySelectorAll(".attack-board .cell");
 const defenseBoardCells = document.querySelectorAll(".defense-board .cell");
 const gameSetupMsg = document.querySelector(".game-setup");
+const ships = document.querySelectorAll(".ship");
+
 const attackSuccessMsg = document.querySelector(".attack-success");
 const attackSuccessShipName = document.querySelector(
   ".attack-success-ship-name",
@@ -10,6 +12,7 @@ const attackSuccessShipName = document.querySelector(
 const attackSuccessCoord = document.querySelector(".attack-success-coord");
 const attackFailMsg = document.querySelector(".attack-fail");
 const attackFailCoord = document.querySelector(".attack-fail-coord");
+
 const gameEndModal = document.querySelector(".game-end-modal");
 const closeModalBtns = document.querySelectorAll(".game-end-modal button");
 const winText = document.querySelector("span.win-text");
@@ -75,4 +78,29 @@ export function showWinModal(winner) {
   }
   gameEndModal.classList.remove("hidden");
   gameEndModal.classList.add("flex");
+}
+
+document.addEventListener("dragover", (event) => {
+  event.preventDefault();
+});
+
+defenseBoardCells.forEach((cell) => {
+  cell.addEventListener("drop", handleShipPlace);
+});
+
+// drag & drop ships
+let draggingShip;
+ships.forEach((ship) => {
+  ship.addEventListener("dragstart", (event) => {
+    draggingShip = event.target;
+  });
+});
+function handleShipPlace(event) {
+  event.preventDefault();
+  const cell = event.target;
+  cell.appendChild(draggingShip);
+}
+
+export function removeSetupMsg() {
+  gameSetupMsg.classList.add("hidden");
 }
