@@ -170,19 +170,19 @@ function setRotateNonOffset(ship) {
 
 function setRotate90Offset(ship) {
   if (ship.classList.contains("carrier")) {
-    ship.style.left = `-96px`;
-    ship.style.top = `93px`;
+    ship.style.left = `-97px`;
+    ship.style.top = `92px`;
   } else if (ship.classList.contains("battleship")) {
     ship.style.left = `-73px`;
     ship.style.top = `69px`;
   } else if (ship.classList.contains("cruiser")) {
     ship.style.left = `-49px`;
-    ship.style.top = `46px`;
+    ship.style.top = `45px`;
   } else if (ship.classList.contains("submarine")) {
     ship.style.left = `-49px`;
-    ship.style.top = `46px`;
+    ship.style.top = `45px`;
   } else if (ship.classList.contains("destroyer")) {
-    ship.style.left = `-25px`;
-    ship.style.top = `22px`;
+    ship.style.left = `-26px`;
+    ship.style.top = `21px`;
   }
 }
