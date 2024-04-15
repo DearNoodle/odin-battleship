@@ -4,7 +4,7 @@ const attackBoardCells = document.querySelectorAll(".attack-board .cell");
 const defenseBoardCells = document.querySelectorAll(".defense-board .cell");
 const gameSetupMsg = document.querySelector(".game-setup");
 const ships = document.querySelectorAll(".ship");
-
+const shipDrags = document.querySelectorAll(".ship span");
 const attackSuccessMsg = document.querySelector(".attack-success");
 const attackSuccessShipName = document.querySelector(
   ".attack-success-ship-name",
@@ -80,27 +80,73 @@ export function showWinModal(winner) {
   gameEndModal.classList.add("flex");
 }
 
-document.addEventListener("dragover", (event) => {
-  event.preventDefault();
-});
-
-defenseBoardCells.forEach((cell) => {
-  cell.addEventListener("drop", handleShipPlace);
-});
-
-// drag & drop ships
-let draggingShip;
-ships.forEach((ship) => {
-  ship.addEventListener("dragstart", (event) => {
-    draggingShip = event.target;
-  });
-});
-function handleShipPlace(event) {
-  event.preventDefault();
-  const cell = event.target;
-  cell.appendChild(draggingShip);
-}
-
 export function removeSetupMsg() {
   gameSetupMsg.classList.add("hidden");
+}
+
+// drag & drop ships
+
+shipDrags.forEach((shipDrag) => {
+  dragElement(shipDrag);
+});
+
+function dragElement(elmnt) {
+  let parentNode = elmnt.parentNode;
+  elmnt.onmousedown = (e) => {
+    e = e || window.event;
+    e.preventDefault();
+
+    // Calculate initial offset relative to the document body
+    let parentRect = parentNode.getBoundingClientRect();
+    let initialParentOffsetX = parentRect.left + 25;
+    let initialParentOffsetY = parentRect.top + 25;
+
+    // Store original position before dragging starts
+    let originalX = parentNode.offsetLeft;
+    let originalY = parentNode.offsetTop;
+
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+
+      let deltaX = e.clientX - initialParentOffsetX;
+      let deltaY = e.clientY - initialParentOffsetY;
+
+      parentNode.style.left = `${deltaX}px`;
+      parentNode.style.top = `${deltaY}px`;
+    }
+
+    function closeDragElement() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+
+      // Return the ship to its original position
+
+      for (const cell of defenseBoardCells) {
+        if (isColliding(elmnt, cell)) {
+          cell.appendChild(parentNode);
+          parentNode.style.left = `-2px`;
+          parentNode.style.top = `-2px`;
+          return;
+        }
+      }
+      parentNode.style.left = `${originalX}px`;
+      parentNode.style.top = `${originalY}px`;
+    }
+
+    function isColliding(element1, element2) {
+      const rect1 = element1.getBoundingClientRect();
+      const rect2 = element2.getBoundingClientRect();
+
+      return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+      );
+    }
+  };
 }
