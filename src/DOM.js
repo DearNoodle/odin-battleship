@@ -4,7 +4,7 @@ const attackBoardCells = document.querySelectorAll(".attack-board .cell");
 const defenseBoardCells = document.querySelectorAll(".defense-board .cell");
 const gameSetupMsg = document.querySelector(".game-setup");
 const ships = document.querySelectorAll(".ship");
-const shipDrags = document.querySelectorAll(".ship span");
+const shipRotatePivots = document.querySelectorAll(".ship span");
 const attackSuccessMsg = document.querySelector(".attack-success");
 const attackSuccessShipName = document.querySelector(
   ".attack-success-ship-name",
@@ -84,26 +84,24 @@ export function removeSetupMsg() {
   gameSetupMsg.classList.add("hidden");
 }
 
-// drag & drop ships
+// drag & rotate ships
 
-shipDrags.forEach((shipDrag) => {
-  dragElement(shipDrag);
+ships.forEach((ship) => {
+  dragElement(ship);
 });
 
-function dragElement(elmnt) {
-  let parentNode = elmnt.parentNode;
-  elmnt.onmousedown = (e) => {
+function dragElement(element) {
+  element.onmousedown = (e) => {
+    const shipPvt = element.querySelector("span");
     e = e || window.event;
     e.preventDefault();
 
-    // Calculate initial offset relative to the document body
-    let parentRect = parentNode.getBoundingClientRect();
-    let initialParentOffsetX = parentRect.left + 25;
-    let initialParentOffsetY = parentRect.top + 25;
+    let parentRect = element.offsetParent.getBoundingClientRect();
+    let initialX = element.offsetLeft;
+    let initialY = element.offsetTop;
 
-    // Store original position before dragging starts
-    let originalX = parentNode.offsetLeft;
-    let originalY = parentNode.offsetTop;
+    let offsetX = e.clientX - parentRect.left - initialX;
+    let offsetY = e.clientY - parentRect.top - initialY;
 
     document.onmouseup = closeDragElement;
     document.onmousemove = elementDrag;
@@ -112,29 +110,26 @@ function dragElement(elmnt) {
       e = e || window.event;
       e.preventDefault();
 
-      let deltaX = e.clientX - initialParentOffsetX;
-      let deltaY = e.clientY - initialParentOffsetY;
-
-      parentNode.style.left = `${deltaX}px`;
-      parentNode.style.top = `${deltaY}px`;
+      element.style.left = `${e.clientX - parentRect.left - offsetX}px`;
+      element.style.top = `${e.clientY - parentRect.top - offsetY}px`;
     }
 
     function closeDragElement() {
       document.onmouseup = null;
       document.onmousemove = null;
 
-      // Return the ship to its original position
-
       for (const cell of defenseBoardCells) {
-        if (isColliding(elmnt, cell)) {
-          cell.appendChild(parentNode);
-          parentNode.style.left = `-2px`;
-          parentNode.style.top = `-2px`;
-          return;
+        if (isColliding(shipPvt, cell)) {
+          cell.appendChild(element.parentNode);
+          break;
         }
       }
-      parentNode.style.left = `${originalX}px`;
-      parentNode.style.top = `${originalY}px`;
+      if (element.style.transform !== `rotate(90deg)`) {
+        element.style.left = `-2px`;
+        element.style.top = `-2px`;
+      } else {
+        setRotateOffset(element);
+      }
     }
 
     function isColliding(element1, element2) {
@@ -149,4 +144,42 @@ function dragElement(elmnt) {
       );
     }
   };
+}
+
+shipRotatePivots.forEach((shipPivot) => {
+  rotateElement(shipPivot);
+});
+
+function rotateElement(shipPvt) {
+  let parentNode = shipPvt.parentNode;
+
+  shipPvt.addEventListener("click", () => {
+    if (parentNode.style.transform === `rotate(90deg)`) {
+      parentNode.style.transform = `rotate(0deg)`;
+      parentNode.style.left = `-2px`;
+      parentNode.style.top = `-2px`;
+    } else {
+      parentNode.style.transform = `rotate(90deg)`;
+      setRotateOffset(parentNode);
+    }
+  });
+}
+
+function setRotateOffset(ship) {
+  if (ship.classList.contains("carrier")) {
+    ship.style.left = `-96px`;
+    ship.style.top = `94px`;
+  } else if (ship.classList.contains("battleship")) {
+    ship.style.left = `-73px`;
+    ship.style.top = `69px`;
+  } else if (ship.classList.contains("cruiser")) {
+    ship.style.left = `-50px`;
+    ship.style.top = `46px`;
+  } else if (ship.classList.contains("submarine")) {
+    ship.style.left = `-50px`;
+    ship.style.top = `46px`;
+  } else if (ship.classList.contains("destroyer")) {
+    ship.style.left = `-25px`;
+    ship.style.top = `23px`;
+  }
 }
