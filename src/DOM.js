@@ -125,10 +125,9 @@ function dragElement(element) {
         }
       }
       if (element.style.transform !== `rotate(90deg)`) {
-        element.style.left = `-2px`;
-        element.style.top = `-2px`;
+        setRotateNonOffset(element);
       } else {
-        setRotateOffset(element);
+        setRotate90Offset(element);
       }
     }
 
@@ -156,30 +155,34 @@ function rotateElement(shipPvt) {
   shipPvt.addEventListener("click", () => {
     if (parentNode.style.transform === `rotate(90deg)`) {
       parentNode.style.transform = `rotate(0deg)`;
-      parentNode.style.left = `-2px`;
-      parentNode.style.top = `-2px`;
+      setRotateNonOffset(parentNode);
     } else {
       parentNode.style.transform = `rotate(90deg)`;
-      setRotateOffset(parentNode);
+      setRotate90Offset(parentNode);
     }
   });
 }
 
-function setRotateOffset(ship) {
+function setRotateNonOffset(ship) {
+  ship.style.left = `-2px`;
+  ship.style.top = `-2px`;
+}
+
+function setRotate90Offset(ship) {
   if (ship.classList.contains("carrier")) {
     ship.style.left = `-96px`;
-    ship.style.top = `94px`;
+    ship.style.top = `93px`;
   } else if (ship.classList.contains("battleship")) {
     ship.style.left = `-73px`;
     ship.style.top = `69px`;
   } else if (ship.classList.contains("cruiser")) {
-    ship.style.left = `-50px`;
+    ship.style.left = `-49px`;
     ship.style.top = `46px`;
   } else if (ship.classList.contains("submarine")) {
-    ship.style.left = `-50px`;
+    ship.style.left = `-49px`;
     ship.style.top = `46px`;
   } else if (ship.classList.contains("destroyer")) {
     ship.style.left = `-25px`;
-    ship.style.top = `23px`;
+    ship.style.top = `22px`;
   }
 }
