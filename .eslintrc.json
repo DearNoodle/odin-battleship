@@ -27,6 +27,8 @@
     "import/no-cycle": "off",
     "no-inner-declarations": "off",
     "no-await-in-loop": "off",
-    "no-promise-executor-return": "off"
+    "no-promise-executor-return": "off",
+    "no-restricted-syntax": "off",
+    "no-shadow":"off"
   }
 }
