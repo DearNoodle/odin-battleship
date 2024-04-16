@@ -98,6 +98,8 @@ export default function createShip(info = [null, null]) {
     }
     if (player.id === "user") {
       placeDomShip(getName(), getCoordinate(), getDirection());
+      const domShip = document.querySelector(`.ship.${name}`);
+      domShip.classList.add("pointer-events-none");
     }
     for (let i = 0; i < getLength(); i++) {
       if (getDirection() === "horizontal") {
