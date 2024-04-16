@@ -27,11 +27,11 @@ export default function createGameboard() {
   ];
 
   Player.forEach((player) => {
-    player.ships.push(createShip(["Carrier", 5]));
-    player.ships.push(createShip(["Battleship", 4]));
-    player.ships.push(createShip(["Cruiser", 3]));
-    player.ships.push(createShip(["Submarine", 3]));
-    player.ships.push(createShip(["Destroyer", 2]));
+    player.ships.push(createShip(["carrier", 5]));
+    player.ships.push(createShip(["battleship", 4]));
+    player.ships.push(createShip(["cruiser", 3]));
+    player.ships.push(createShip(["submarine", 3]));
+    player.ships.push(createShip(["destroyer", 2]));
   });
 
   Player.forEach((player) => {
@@ -43,21 +43,22 @@ export default function createGameboard() {
     }
   });
 
-  function randomPlaceAll() {
-    Player.forEach((player) => {
-      player.ships.forEach((ship) => {
-        let i = 0;
-        while (!ship.getIsPlaced() && i < 1000) {
-          i++;
-          ship.placeShip("random", boardSize, player.playerBoard);
-        }
-      });
+  function randomPlace(id) {
+    const player = Player.find((p) => p.id === id);
+    player.ships.forEach((ship) => {
+      while (!ship.getIsPlaced()) {
+        ship.placeShip("random", player, boardSize);
+      }
     });
-    setIsAllPlaced(true);
+  }
+
+  function manualPlace(ship, player, coord, dir) {
+    ship.placeShip("manual", player, boardSize, coord, dir);
   }
 
   let [curPlayer, nextPlayer] = Player;
   let roundPlayers = { curPlayer, nextPlayer };
+
   // game events
 
   function nextRound() {
@@ -123,7 +124,9 @@ export default function createGameboard() {
   return {
     roundPlayers,
     getIsAllPlaced,
-    randomPlaceAll,
+    setIsAllPlaced,
+    randomPlace,
+    manualPlace,
     nextRound,
     comRandomAttack,
     DomClickAttack,

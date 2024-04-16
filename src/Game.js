@@ -1,16 +1,29 @@
 import createGameboard from "./Gameboard";
-import { DomClicks, showWinModal, removeSetupMsg } from "./DOM";
+import {
+  DomClicks,
+  initPlacementBtns,
+  showEndModal,
+  removeSetupMsg,
+  initModalCloseBtns,
+  initShipDrag,
+  initShipRotate,
+  isShipPanelEmpty,
+} from "./DOM";
 
-const comMoveTime = 1.5; // in second
+const comMoveTime = 0.1; // in second
 const shipPlacement = "random";
+
 export default async function Game() {
   // init
   const gameBoard = createGameboard();
-
-  await waitForShipPlace(gameBoard, shipPlacement);
-  removeSetupMsg();
+  initPlacementBtns(gameBoard);
+  initModalCloseBtns();
+  initShipDrag(gameBoard.roundPlayers.curPlayer, gameBoard);
+  initShipRotate();
 
   // run game
+  await waitForShipPlace(gameBoard, shipPlacement);
+  removeSetupMsg();
   while (!gameBoard.isAllSunk()) {
     if (gameBoard.roundPlayers.curPlayer.id === "user") {
       await waitForDomClick();
@@ -26,22 +39,21 @@ export default async function Game() {
 
   // end game
   const winner = gameBoard.roundPlayers.nextPlayer.id;
-  showWinModal(winner);
-}
+  showEndModal(winner);
 
-async function waitForShipPlace(gameBoard, place) {
-  if (place === "random") {
-    gameBoard.randomPlaceAll();
-    // wip dom auto placement
+  async function waitForShipPlace(gameBoard) {
+    gameBoard.randomPlace("com");
+    while (!gameBoard.getIsAllPlaced()) {
+      if (isShipPanelEmpty()) {
+        gameBoard.setIsAllPlaced(true);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
   }
-  // wip manual placement
-  while (!gameBoard.getIsAllPlaced()) {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-  }
-}
 
-async function waitForDomClick() {
-  while (!DomClicks.attack.clicked) {
-    await new Promise((resolve) => setTimeout(resolve, 100));
+  async function waitForDomClick() {
+    while (!DomClicks.attack.clicked) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
   }
 }

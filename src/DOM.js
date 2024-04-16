@@ -2,9 +2,13 @@ export const DomClicks = { attack: { clicked: false } };
 
 const attackBoardCells = document.querySelectorAll(".attack-board .cell");
 const defenseBoardCells = document.querySelectorAll(".defense-board .cell");
+
 const gameSetupMsg = document.querySelector(".game-setup");
-const ships = document.querySelectorAll(".ship");
+
+const shipPanel = document.querySelector(".ships-panel");
+const domShips = document.querySelectorAll(".ship");
 const shipRotatePivots = document.querySelectorAll(".ship span");
+
 const attackSuccessMsg = document.querySelector(".attack-success");
 const attackSuccessShipName = document.querySelector(
   ".attack-success-ship-name",
@@ -13,8 +17,16 @@ const attackSuccessCoord = document.querySelector(".attack-success-coord");
 const attackFailMsg = document.querySelector(".attack-fail");
 const attackFailCoord = document.querySelector(".attack-fail-coord");
 
+const gameStartModal = document.querySelector(".game-start-modal");
+const randomPlaceBtn = document.querySelector(
+  ".game-start-modal .random-place",
+);
+const manualPlaceBtn = document.querySelector(
+  ".game-start-modal .manual-place",
+);
+
 const gameEndModal = document.querySelector(".game-end-modal");
-const closeModalBtns = document.querySelectorAll(".game-end-modal button");
+const endModalBtns = document.querySelectorAll(".game-end-modal button");
 const winText = document.querySelector("span.win-text");
 
 for (let i = 0; i < attackBoardCells.length; i++) {
@@ -26,12 +38,6 @@ for (let i = 0; i < attackBoardCells.length; i++) {
   });
 }
 
-closeModalBtns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    gameEndModal.classList.add("hidden");
-  });
-});
-
 export function renderCell(target, color, coord) {
   let targetCell;
   if (target !== "defenseBoard") {
@@ -41,7 +47,6 @@ export function renderCell(target, color, coord) {
   } else {
     let [x, y] = coord;
     targetCell = defenseBoardCells[x * 10 + y];
-    targetCell.classList.add("z-20");
   }
 
   if (color === "red") {
@@ -68,7 +73,7 @@ export function announceShipMiss(coord) {
   attackFailCoord.textContent = `${String.fromCharCode(65 + y)}${x + 1}`;
 }
 
-export function showWinModal(winner) {
+export function showEndModal(winner) {
   if (winner === "user") {
     winText.textContent = "You";
   } else if (winner === "com") {
@@ -80,17 +85,39 @@ export function showWinModal(winner) {
   gameEndModal.classList.add("flex");
 }
 
+export function initModalCloseBtns() {
+  endModalBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      gameEndModal.classList.remove("flex");
+      gameEndModal.classList.add("hidden");
+    });
+  });
+
+  [randomPlaceBtn, manualPlaceBtn].forEach((btn) => {
+    btn.addEventListener("click", () => {
+      gameStartModal.classList.remove("flex");
+      gameStartModal.classList.add("hidden");
+    });
+  });
+}
+
+export function initPlacementBtns(gameBoard) {
+  randomPlaceBtn.addEventListener("click", () => gameBoard.randomPlace("user"));
+  // manualPlaceBtn.addEventListener("click");
+}
+
 export function removeSetupMsg() {
   gameSetupMsg.classList.add("hidden");
 }
 
 // drag & rotate ships
+export function initShipDrag(player, gameBoard) {
+  domShips.forEach((domShip) => {
+    dragElement(domShip, player, gameBoard);
+  });
+}
 
-ships.forEach((ship) => {
-  dragElement(ship);
-});
-
-function dragElement(element) {
+function dragElement(element, player, gameBoard) {
   element.onmousedown = (e) => {
     const shipPvt = element.querySelector("span");
     e = e || window.event;
@@ -118,10 +145,18 @@ function dragElement(element) {
       document.onmouseup = null;
       document.onmousemove = null;
 
-      for (const cell of defenseBoardCells) {
+      for (let i = 0; i < defenseBoardCells.length; i++) {
+        const cell = defenseBoardCells[i];
         if (isColliding(shipPvt, cell)) {
-          cell.appendChild(element.parentNode);
-          break;
+          const ship = player.ships.find((s) =>
+            element.classList.contains(s.getName()),
+          );
+          const coord = [Math.floor(i / 10), i % 10];
+          const direction =
+            element.style.transform === "rotate(90deg)"
+              ? "vertical"
+              : "horizontal";
+          gameBoard.manualPlace(ship, player, coord, direction);
         }
       }
       if (element.style.transform !== `rotate(90deg)`) {
@@ -145,9 +180,11 @@ function dragElement(element) {
   };
 }
 
-shipRotatePivots.forEach((shipPivot) => {
-  rotateElement(shipPivot);
-});
+export function initShipRotate() {
+  shipRotatePivots.forEach((shipPivot) => {
+    rotateElement(shipPivot);
+  });
+}
 
 function rotateElement(shipPvt) {
   let parentNode = shipPvt.parentNode;
@@ -185,4 +222,24 @@ function setRotate90Offset(ship) {
     ship.style.left = `-26px`;
     ship.style.top = `21px`;
   }
+}
+
+export function placeDomShip(name, coord, direction) {
+  let [x, y] = coord;
+  const domShip = document.querySelector(`.ship.${name}`);
+  defenseBoardCells[x * 10 + y].appendChild(domShip.parentNode);
+  if (direction === "horizontal") {
+    domShip.style.transform = `rotate(0deg)`;
+    setRotateNonOffset(domShip);
+  } else {
+    domShip.style.transform = `rotate(90deg)`;
+    setRotate90Offset(domShip);
+  }
+}
+
+export function isShipPanelEmpty() {
+  if (shipPanel.children.length === 0) {
+    return true;
+  }
+  return false;
 }

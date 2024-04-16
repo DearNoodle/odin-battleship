@@ -1,3 +1,5 @@
+import { placeDomShip } from "./DOM";
+
 export default function createShip(info = [null, null]) {
   let [name, length] = info;
   let hitNum = 0;
@@ -13,7 +15,7 @@ export default function createShip(info = [null, null]) {
     return length;
   }
 
-  function getcoord() {
+  function getCoordinate() {
     return coordinate;
   }
 
@@ -47,7 +49,7 @@ export default function createShip(info = [null, null]) {
     isPlaced = bool;
   }
 
-  function placeShip(placement, boardSize, playerBoard) {
+  function placeShip(placement, player, boardSize, coord, dir) {
     if (placement === "random") {
       let i = 0;
       while (!getIsPlaced() && i < 1000) {
@@ -57,21 +59,20 @@ export default function createShip(info = [null, null]) {
             Math.floor(Math.random() * boardSize),
             Math.floor(Math.random() * boardSize),
           ],
-          playerBoard,
+          player.playerBoard,
         );
         setDirection(["vertical", "horizontal"][Math.floor(Math.random() * 2)]);
-        checkPlace(playerBoard, boardSize);
+        checkPlace(player, boardSize);
       }
-      return;
+    } else if (placement === "manual") {
+      setCoordinate(coord, player.playerBoard);
+      setDirection(dir);
+      checkPlace(player, boardSize);
     }
-    let [coord, dir] = placement;
-    setCoordinate(coord, playerBoard);
-    setDirection(dir);
-    checkPlace(playerBoard, boardSize);
   }
 
-  function checkPlace(playerBoard, boardSize) {
-    let [coordx, coordy] = getcoord();
+  function checkPlace(player, boardSize) {
+    let [coordx, coordy] = getCoordinate();
     for (let i = 0; i < getLength(); i++) {
       function isValidPlacement() {
         const isPlacable = (x, y) =>
@@ -79,13 +80,13 @@ export default function createShip(info = [null, null]) {
           x < boardSize &&
           y >= 0 &&
           y < boardSize &&
-          playerBoard[x] !== undefined &&
-          playerBoard[x][y].shipHere === null;
+          player.playerBoard[x] !== undefined &&
+          player.playerBoard[x][y].shipHere === null;
 
-        if (getDirection() === "vertical") {
+        if (getDirection() === "horizontal") {
           return isPlacable(coordx, coordy + i);
         }
-        if (getDirection() === "horizontal") {
+        if (getDirection() === "vertical") {
           return isPlacable(coordx + i, coordy);
         }
         throw new Error("Invalid direction");
@@ -95,14 +96,16 @@ export default function createShip(info = [null, null]) {
         return;
       }
     }
-
+    if (player.id === "user") {
+      placeDomShip(getName(), getCoordinate(), getDirection());
+    }
     for (let i = 0; i < getLength(); i++) {
-      if (getDirection() === "vertical") {
-        playerBoard[coordx][coordy + i].shipHere = getName();
-        setCoordinate([coordx, coordy + i], playerBoard);
-      } else if (getDirection() === "horizontal") {
-        playerBoard[coordx + i][coordy].shipHere = getName();
-        setCoordinate([coordx + i, coordy], playerBoard);
+      if (getDirection() === "horizontal") {
+        player.playerBoard[coordx][coordy + i].shipHere = getName();
+        setCoordinate([coordx, coordy + i], player.playerBoard);
+      } else if (getDirection() === "vertical") {
+        player.playerBoard[coordx + i][coordy].shipHere = getName();
+        setCoordinate([coordx + i, coordy], player.playerBoard);
       }
     }
     setIsPlaced(true);
@@ -130,7 +133,7 @@ export default function createShip(info = [null, null]) {
   return {
     getName,
     getLength,
-    getcoord,
+    getCoordinate,
     getDirection,
     getIsPlaced,
     placeShip,
