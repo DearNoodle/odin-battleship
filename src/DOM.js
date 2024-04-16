@@ -86,24 +86,31 @@ export function showEndModal(winner) {
 }
 
 export function initModalCloseBtns() {
+  // Store References to Listener Functions
+  const handleEndModalClick = () => {
+    gameEndModal.classList.remove("flex");
+    gameEndModal.classList.add("hidden");
+  };
+
+  const handleStartModalClick = () => {
+    gameStartModal.classList.remove("flex");
+    gameStartModal.classList.add("hidden");
+    // Remove listeners after closing the start modal
+    randomPlaceBtn.removeEventListener("click", handleStartModalClick);
+    manualPlaceBtn.removeEventListener("click", handleStartModalClick);
+  };
+
   endModalBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      gameEndModal.classList.remove("flex");
-      gameEndModal.classList.add("hidden");
-    });
+    btn.addEventListener("click", handleEndModalClick);
   });
 
   [randomPlaceBtn, manualPlaceBtn].forEach((btn) => {
-    btn.addEventListener("click", () => {
-      gameStartModal.classList.remove("flex");
-      gameStartModal.classList.add("hidden");
-    });
+    btn.addEventListener("click", handleStartModalClick);
   });
 }
 
 export function initPlacementBtns(gameBoard) {
   randomPlaceBtn.addEventListener("click", () => gameBoard.randomPlace("user"));
-  // manualPlaceBtn.addEventListener("click");
 }
 
 export function removeSetupMsg() {
