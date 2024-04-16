@@ -10,7 +10,7 @@ import {
   isShipPanelEmpty,
 } from "./DOM";
 
-const comMoveTime = 0.1; // in second
+const comMoveTime = 1.5; // in second
 const shipPlacement = "random";
 
 export default async function Game() {

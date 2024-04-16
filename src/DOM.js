@@ -120,80 +120,74 @@ export function removeSetupMsg() {
 // drag & rotate ships
 export function initShipDrag(player, gameBoard) {
   domShips.forEach((domShip) => {
-    dragElement(domShip, player, gameBoard);
+    dragShip(domShip, player, gameBoard);
   });
 }
 
-function dragElement(element, player, gameBoard) {
-  element.onmousedown = (e) => {
-    const shipPvt = element.querySelector("span");
-    e = e || window.event;
+function dragShip(domShip, player, gameBoard) {
+  domShip.addEventListener("mousedown", (e) => {
+    const shipPvt = domShip.querySelector("span");
     e.preventDefault();
-
-    let parentRect = element.offsetParent.getBoundingClientRect();
-    let initialX = element.offsetLeft;
-    let initialY = element.offsetTop;
-
+    let parentRect = domShip.offsetParent.getBoundingClientRect();
+    let initialX = domShip.offsetLeft;
+    let initialY = domShip.offsetTop;
     let offsetX = e.clientX - parentRect.left - initialX;
     let offsetY = e.clientY - parentRect.top - initialY;
 
-    document.onmouseup = closeDragElement;
-    document.onmousemove = elementDrag;
-
-    function elementDrag(e) {
-      e = e || window.event;
+    const shipDrag = (e) => {
       e.preventDefault();
+      domShip.style.left = `${e.clientX - parentRect.left - offsetX}px`;
+      domShip.style.top = `${e.clientY - parentRect.top - offsetY}px`;
+    };
 
-      element.style.left = `${e.clientX - parentRect.left - offsetX}px`;
-      element.style.top = `${e.clientY - parentRect.top - offsetY}px`;
-    }
-
-    function closeDragElement() {
-      document.onmouseup = null;
-      document.onmousemove = null;
+    const closeDragShip = () => {
+      document.removeEventListener("mouseup", closeDragShip);
+      document.removeEventListener("mousemove", shipDrag);
 
       for (let i = 0; i < defenseBoardCells.length; i++) {
         const cell = defenseBoardCells[i];
         if (isColliding(shipPvt, cell)) {
           const ship = player.ships.find((s) =>
-            element.classList.contains(s.getName()),
+            domShip.classList.contains(s.getName()),
           );
           const coord = [Math.floor(i / 10), i % 10];
           const direction =
-            element.style.transform === "rotate(90deg)"
+            domShip.style.transform === "rotate(90deg)"
               ? "vertical"
               : "horizontal";
           gameBoard.manualPlace(ship, player, coord, direction);
         }
       }
-      if (element.style.transform !== `rotate(90deg)`) {
-        setRotateNonOffset(element);
+
+      if (domShip.style.transform !== `rotate(90deg)`) {
+        setRotateNonOffset(domShip);
       } else {
-        setRotate90Offset(element);
+        setRotate90Offset(domShip);
       }
-    }
+      function isColliding(element1, element2) {
+        const rect1 = element1.getBoundingClientRect();
+        const rect2 = element2.getBoundingClientRect();
+        return !(
+          rect1.right < rect2.left ||
+          rect1.left > rect2.right ||
+          rect1.bottom < rect2.top ||
+          rect1.top > rect2.bottom
+        );
+      }
+    };
 
-    function isColliding(element1, element2) {
-      const rect1 = element1.getBoundingClientRect();
-      const rect2 = element2.getBoundingClientRect();
-
-      return !(
-        rect1.right < rect2.left ||
-        rect1.left > rect2.right ||
-        rect1.bottom < rect2.top ||
-        rect1.top > rect2.bottom
-      );
-    }
-  };
+    document.addEventListener("mouseup", closeDragShip);
+    document.addEventListener("mousemove", shipDrag);
+  });
 }
 
 export function initShipRotate() {
   shipRotatePivots.forEach((shipPivot) => {
-    rotateElement(shipPivot);
+    rotateShip(shipPivot);
   });
 }
 
-function rotateElement(shipPvt) {
+function rotateShip(shipPvt) {
   let parentNode = shipPvt.parentNode;
 
   shipPvt.addEventListener("click", () => {
@@ -207,27 +201,27 @@ function rotateElement(shipPvt) {
   });
 }
 
-function setRotateNonOffset(ship) {
-  ship.style.left = `-2px`;
-  ship.style.top = `-2px`;
+function setRotateNonOffset(domShip) {
+  domShip.style.left = `-2px`;
+  domShip.style.top = `-2px`;
 }
 
-function setRotate90Offset(ship) {
-  if (ship.classList.contains("carrier")) {
-    ship.style.left = `-97px`;
-    ship.style.top = `92px`;
-  } else if (ship.classList.contains("battleship")) {
-    ship.style.left = `-73px`;
-    ship.style.top = `69px`;
-  } else if (ship.classList.contains("cruiser")) {
-    ship.style.left = `-49px`;
-    ship.style.top = `45px`;
-  } else if (ship.classList.contains("submarine")) {
-    ship.style.left = `-49px`;
-    ship.style.top = `45px`;
-  } else if (ship.classList.contains("destroyer")) {
-    ship.style.left = `-26px`;
-    ship.style.top = `21px`;
+function setRotate90Offset(domShip) {
+  if (domShip.classList.contains("carrier")) {
+    domShip.style.left = `-97px`;
+    domShip.style.top = `92px`;
+  } else if (domShip.classList.contains("battleship")) {
+    domShip.style.left = `-73px`;
+    domShip.style.top = `69px`;
+  } else if (domShip.classList.contains("cruiser")) {
+    domShip.style.left = `-49px`;
+    domShip.style.top = `45px`;
+  } else if (domShip.classList.contains("submarine")) {
+    domShip.style.left = `-49px`;
+    domShip.style.top = `45px`;
+  } else if (domShip.classList.contains("destroyer")) {
+    domShip.style.left = `-26px`;
+    domShip.style.top = `21px`;
   }
 }
 
