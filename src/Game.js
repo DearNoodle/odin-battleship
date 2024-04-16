@@ -10,7 +10,7 @@ import {
   isShipPanelEmpty,
 } from "./DOM";
 
-const comMoveTime = 1.5; // in second
+const comPlayTIme = 1; // in second
 const shipPlacement = "random";
 
 export default async function Game() {
@@ -29,7 +29,7 @@ export default async function Game() {
       await waitForDomClick();
       gameBoard.DomClickAttack();
     } else if (gameBoard.roundPlayers.curPlayer.id === "com") {
-      await new Promise((resolve) => setTimeout(resolve, comMoveTime * 1000));
+      await new Promise((resolve) => setTimeout(resolve, comPlayTIme * 1000));
       gameBoard.comRandomAttack();
     } else {
       throw new Error("Invalid Player");
