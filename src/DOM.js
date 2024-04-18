@@ -29,13 +29,17 @@ const gameEndModal = document.querySelector(".game-end-modal");
 const endModalBtns = document.querySelectorAll(".game-end-modal button");
 const winText = document.querySelector("span.win-text");
 
-for (let i = 0; i < attackBoardCells.length; i++) {
-  const cell = attackBoardCells[i];
-  cell.addEventListener("click", () => {
-    DomClicks.attack.clicked = true;
-    DomClicks.attack.target = cell;
-    DomClicks.attack.coord = [Math.floor(i / 10), i % 10];
-  });
+export function InitCellClicks(gameBoard) {
+  for (let i = 0; i < attackBoardCells.length; i++) {
+    const cell = attackBoardCells[i];
+    cell.addEventListener("click", () => {
+      if (gameBoard.roundPlayers.curPlayer.id === "user") {
+        DomClicks.attack.clicked = true;
+        DomClicks.attack.target = cell;
+        DomClicks.attack.coord = [Math.floor(i / 10), i % 10];
+      }
+    });
+  }
 }
 
 export function renderCell(target, color, coord) {

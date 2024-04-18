@@ -1,13 +1,14 @@
 import createGameboard from "./Gameboard";
 import {
   DomClicks,
-  initPlacementBtns,
   showEndModal,
   removeSetupMsg,
-  initModalCloseBtns,
+  initPlacementBtns,
   initShipDrag,
   initShipRotate,
+  InitCellClicks,
   isShipPanelEmpty,
+  initModalCloseBtns,
 } from "./DOM";
 
 const comPlayTIme = 1; // in second
@@ -20,6 +21,7 @@ export default async function Game() {
   initModalCloseBtns();
   initShipDrag(gameBoard.roundPlayers.curPlayer, gameBoard);
   initShipRotate();
+  InitCellClicks(gameBoard);
 
   // run game
   await waitForShipPlace(gameBoard, shipPlacement);
