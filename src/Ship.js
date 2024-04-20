@@ -102,10 +102,8 @@ export default function createShip(info = [null, null]) {
     for (let i = 0; i < getLength(); i++) {
       if (getDirection() === "horizontal") {
         player.playerBoard[coordx][coordy + i].shipHere = getName();
-        setCoordinate([coordx, coordy + i], player.playerBoard);
       } else if (getDirection() === "vertical") {
         player.playerBoard[coordx + i][coordy].shipHere = getName();
-        setCoordinate([coordx + i, coordy], player.playerBoard);
       }
     }
     setIsPlaced(true);
