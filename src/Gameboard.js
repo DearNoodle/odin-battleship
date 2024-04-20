@@ -4,6 +4,7 @@ import {
   announceShipHit,
   announceShipMiss,
   DomClicks,
+  placeDomShip,
 } from "./DOM";
 
 export default function createGameboard() {
@@ -47,13 +48,13 @@ export default function createGameboard() {
     const player = Player.find((p) => p.id === id);
     player.ships.forEach((ship) => {
       while (!ship.getIsPlaced()) {
-        ship.placeShip("random", player, boardSize);
+        ship.placeShip(placeDomShip, "random", player, boardSize);
       }
     });
   }
 
   function manualPlace(ship, player, coord, dir) {
-    ship.placeShip("manual", player, boardSize, coord, dir);
+    ship.placeShip(placeDomShip, "manual", player, boardSize, coord, dir);
   }
 
   let [curPlayer, nextPlayer] = Player;

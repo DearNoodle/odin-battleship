@@ -1,5 +1,3 @@
-import { placeDomShip } from "./DOM";
-
 export default function createShip(info = [null, null]) {
   let [name, length] = info;
   let hitNum = 0;
@@ -49,7 +47,7 @@ export default function createShip(info = [null, null]) {
     isPlaced = bool;
   }
 
-  function placeShip(placement, player, boardSize, coord, dir) {
+  function placeShip(placeDomShip, placement, player, boardSize, coord, dir) {
     if (placement === "random") {
       let i = 0;
       while (!getIsPlaced() && i < 1000) {
@@ -62,16 +60,16 @@ export default function createShip(info = [null, null]) {
           player.playerBoard,
         );
         setDirection(["vertical", "horizontal"][Math.floor(Math.random() * 2)]);
-        checkPlace(player, boardSize);
+        checkPlace(placeDomShip, player, boardSize);
       }
     } else if (placement === "manual") {
       setCoordinate(coord, player.playerBoard);
       setDirection(dir);
-      checkPlace(player, boardSize);
+      checkPlace(placeDomShip, player, boardSize);
     }
   }
 
-  function checkPlace(player, boardSize) {
+  function checkPlace(placeDomShip, player, boardSize) {
     let [coordx, coordy] = getCoordinate();
     for (let i = 0; i < getLength(); i++) {
       function isValidPlacement() {
