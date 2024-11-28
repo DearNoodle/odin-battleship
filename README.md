@@ -1,6 +1,6 @@
 # Battleship Game
 
-This project is a practice of building the classic game Battleship using Test-Driven Development (TDD) with Jest and mocking. It relies solely on JavaScript for both game logic and interactive UI.
+This project is a practice of building the classic game Battleship using Test-Driven Development (TDD) with Jest and mocking. It relies solely on JavaScript for both game logic and interactive UI. The code is designed with a modular, object-oriented architecture.
 
 **Features:**
 
